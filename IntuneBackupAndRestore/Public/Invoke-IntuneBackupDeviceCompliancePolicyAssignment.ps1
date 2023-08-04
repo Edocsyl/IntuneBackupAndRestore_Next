@@ -23,11 +23,11 @@ function Invoke-IntuneBackupDeviceCompliancePolicyAssignment {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
         Connect-MgGraph
-    }
+    # }
 
     # Create folder if not exists
     if (-not (Test-Path "$Path\Device Compliance Policies\Assignments")) {
@@ -35,10 +35,11 @@ function Invoke-IntuneBackupDeviceCompliancePolicyAssignment {
     }
 
     # Get all assignments from all policies
-    $deviceCompliancePolicies = Get-DeviceManagement_DeviceCompliancePolicies | Get-MgGraphDataWithPagination
+    $deviceCompliancePolicies = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies" | Get-MgGraphDataWithPagination
 
-    foreach ($deviceCompliancePolicy in $deviceCompliancePolicies) {
-        $assignments = Get-DeviceManagement_DeviceCompliancePolicies_Assignments -DeviceCompliancePolicyId $deviceCompliancePolicy.id 
+    foreach ($deviceCompliancePolicy in $deviceCompliancePolicies) { 
+        https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies/2d722157-436e-482e-b363-819903aa7327/assignments
+        $assignments = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies/"$deviceCompliancePolicy.id"/assignments"
         if ($assignments) {
             $fileName = ($deviceCompliancePolicy.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
             $assignments | ConvertTo-Json | Out-File -LiteralPath "$path\Device Compliance Policies\Assignments\$fileName.json"
