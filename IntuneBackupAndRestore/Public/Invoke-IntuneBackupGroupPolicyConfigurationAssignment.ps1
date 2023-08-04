@@ -23,11 +23,11 @@ function Invoke-IntuneBackupGroupPolicyConfigurationAssignment {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
         Connect-MgGraph
-    }
+    # }
 
     # Create folder if not exists
     if (-not (Test-Path "$Path\Administrative Templates\Assignments")) {

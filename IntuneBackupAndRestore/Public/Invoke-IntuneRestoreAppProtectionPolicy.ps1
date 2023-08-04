@@ -23,11 +23,11 @@ function Invoke-IntuneRestoreAppProtectionPolicy {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
         Connect-MgGraph
-    }
+    # }
 
     # Get all App Protection Policies
     $appProtectionPolicies = Get-ChildItem -Path "$path\App Protection Policies" -File

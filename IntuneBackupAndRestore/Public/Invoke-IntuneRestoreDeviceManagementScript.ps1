@@ -23,12 +23,12 @@ function Invoke-IntuneRestoreDeviceManagementScript {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MgGraph
-    }
-
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    Connect-MgGraph
+    # }
+    
     # Get all device management scripts
     $deviceManagementScripts = Get-ChildItem -Path "$Path\Device Management Scripts" -File
     foreach ($deviceManagementScript in $deviceManagementScripts) {

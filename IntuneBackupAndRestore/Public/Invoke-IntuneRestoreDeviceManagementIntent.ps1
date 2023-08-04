@@ -23,11 +23,11 @@ function Invoke-IntuneRestoreDeviceManagementIntent {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MgGraph
-    }
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    Connect-MgGraph
+    # }
 
     # Get all device management intents
     $deviceManagementIntents = Get-ChildItem -Path "$Path\Device Management Intents" -Recurse -File

@@ -23,11 +23,11 @@ function Invoke-IntuneRestoreDeviceCompliancePolicy {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
         Connect-MgGraph
-    }
+    # }
 
     # Get all Device Compliance Policies
     $deviceCompliancePolicies = Get-ChildItem -Path "$Path\Device Compliance Policies" -File

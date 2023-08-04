@@ -23,11 +23,11 @@ function Invoke-IntuneRestoreGroupPolicyConfiguration {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
-        Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MgGraph
-    }
+    # # Set the Microsoft Graph API endpoint
+    # if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
+    #     Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
+    Connect-MgGraph
+    # }
 
     # Get all Group Policy Configurations
     $groupPolicyConfigurations = Get-ChildItem -Path "$Path\Administrative Templates" -File
