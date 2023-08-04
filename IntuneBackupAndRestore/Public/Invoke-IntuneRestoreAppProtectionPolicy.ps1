@@ -26,7 +26,7 @@ function Invoke-IntuneRestoreAppProtectionPolicy {
     # Set the Microsoft Graph API endpoint
     if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
         Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MSGraph -ForceNonInteractive -Quiet
+        Connect-MgGraph
     }
 
     # Get all App Protection Policies
@@ -55,7 +55,7 @@ function Invoke-IntuneRestoreAppProtectionPolicy {
 
         # Restore the App Protection Policy
         try {
-            $null = Invoke-MSGraphRequest -HttpMethod POST -Content $requestBody.toString() -Url "deviceAppManagement/managedAppPolicies" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceAppManagement/managedAppPolicies" -ErrorAction Stop
 
             [PSCustomObject]@{
                 "Action" = "Restore"

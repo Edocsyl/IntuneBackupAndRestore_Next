@@ -26,7 +26,7 @@ function Invoke-IntuneBackupDeviceConfiguration {
     # Set the Microsoft Graph API endpoint
     if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
         Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MSGraph -ForceNonInteractive -Quiet
+        Connect-MgGraph
     }
 
     # Create folder if not exists
@@ -35,7 +35,7 @@ function Invoke-IntuneBackupDeviceConfiguration {
     }
 
     # Get all device configurations
-    $deviceConfigurations = Get-DeviceManagement_DeviceConfigurations | Get-MSGraphAllPages
+    $deviceConfigurations = Get-DeviceManagement_DeviceConfigurations | Get-MgGraphDataWithPagination
     
 
     foreach ($deviceConfiguration in $deviceConfigurations) {
@@ -48,7 +48,7 @@ function Invoke-IntuneBackupDeviceConfiguration {
             foreach ($omaSetting in $deviceConfiguration.omaSettings) {
                 # Check if this particular setting is encrypted, and get the plaintext only if necessary
                 if ($omaSetting.isEncrypted) {
-                    $omaSettingValue = Invoke-MSGraphRequest -HttpMethod GET -Url "deviceManagement/deviceConfigurations/$($deviceConfiguration.id)/getOmaSettingPlainTextValue(secretReferenceValueId='$($omaSetting.secretReferenceValueId)')" | Get-MSGraphAllPages
+                    $omaSettingValue = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceConfigurations/$($deviceConfiguration.id)/getOmaSettingPlainTextValue(secretReferenceValueId='$($omaSetting.secretReferenceValueId)')" | Get-MgGraphDataWithPagination
                 }
                 # Define a new 'unencrypted' OMA Setting
                 $newOmaSetting = @{}

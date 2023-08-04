@@ -35,7 +35,7 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
     # Set the Microsoft Graph API endpoint
     if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
         Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MSGraph -ForceNonInteractive -Quiet
+        Connect-MgGraph
     }
 
     # Get all policies with assignments
@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
         # Get the Device Management Script we are restoring the assignments for
         try {
             if ($restoreById) {
-                $deviceManagementScriptObject = Invoke-MSGraphRequest -HttpMethod GET -Url "deviceManagement/deviceManagementScripts/$deviceManagementScriptId"
+                $deviceManagementScriptObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts/$deviceManagementScriptId"
             }
             else {
-                $deviceManagementScriptObject = Invoke-MSGraphRequest -HttpMethod GET -Url "deviceManagement/deviceManagementScripts" | Get-MSGraphAllPages | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
+                $deviceManagementScriptObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts" | Get-MgGraphDataWithPagination | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
                 if (-not ($deviceManagementScriptObject)) {
                     Write-Verbose "Error retrieving Intune Device Management Script for $($deviceManagementScript.FullName). Skipping assignment restore" -Verbose
                     continue
@@ -80,7 +80,7 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
 
         # Restore the assignments
         try {
-            $null = Invoke-MSGraphRequest -HttpMethod POST -Content $requestBody.toString() -Url "deviceManagement/deviceManagementScripts/$($deviceManagementScriptObject.id)/assign" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceManagement/deviceManagementScripts/$($deviceManagementScriptObject.id)/assign" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Device Management Script Assignments"

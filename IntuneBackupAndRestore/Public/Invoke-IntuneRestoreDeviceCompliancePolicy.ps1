@@ -26,7 +26,7 @@ function Invoke-IntuneRestoreDeviceCompliancePolicy {
     # Set the Microsoft Graph API endpoint
     if (-not ((Get-MSGraphEnvironment).SchemaVersion -eq $apiVersion)) {
         Update-MSGraphEnvironment -SchemaVersion $apiVersion -Quiet
-        Connect-MSGraph -ForceNonInteractive -Quiet
+        Connect-MgGraph
     }
 
     # Get all Device Compliance Policies
@@ -62,7 +62,7 @@ function Invoke-IntuneRestoreDeviceCompliancePolicy {
 
         # Restore the Device Compliance Policy
         try {
-            $null = Invoke-MSGraphRequest -HttpMethod POST -Content $requestBody.toString() -Url "deviceManagement/deviceCompliancePolicies" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body -Content $requestBody.toString() -URI "deviceManagement/deviceCompliancePolicies" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Device Compliance Policy"
