@@ -34,7 +34,7 @@ function Invoke-IntuneRestoreDeviceConfiguration {
     
     foreach ($deviceConfiguration in $deviceConfigurations) {
         $deviceConfigurationContent = Get-Content -LiteralPath $deviceConfiguration.FullName -Raw
-        $deviceConfigurationDisplayName = ($deviceConfigurationContent | ConvertFrom-Json).displayName
+        $deviceConfigurationDisplayName = ($deviceConfigurationContent | ConvertFrom-Json).name
 
         # Remove properties that are not available for creating a new configuration
         $requestBodyObject = $deviceConfigurationContent | ConvertFrom-Json
