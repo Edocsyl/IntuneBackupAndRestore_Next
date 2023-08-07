@@ -77,7 +77,7 @@ function Invoke-IntuneBackupGroupPolicyConfiguration {
             }
 
             $groupPolicyBackupValues += $groupPolicyBackupValue
-        }
+        } 
 
         $fileName = ($groupPolicyConfiguration.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
         $groupPolicyBackupValues | ConvertTo-Json -Depth 100 | Out-File -LiteralPath "$path\Administrative Templates\$fileName.json"

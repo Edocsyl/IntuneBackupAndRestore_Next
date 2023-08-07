@@ -93,4 +93,4 @@ function Invoke-IntuneRestoreGroupPolicyConfigurationAssignment {
             Write-Error $_ -ErrorAction Continue
         }
     }
-}
+} 

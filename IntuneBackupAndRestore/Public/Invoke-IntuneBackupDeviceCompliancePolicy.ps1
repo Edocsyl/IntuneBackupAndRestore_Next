@@ -35,7 +35,7 @@ function Invoke-IntuneBackupDeviceCompliancePolicy {
     }
 
     # Get all Device Compliance Policies
-    $deviceCompliancePolicies = Get-DeviceManagement_DeviceCompliancePolicies | Get-MgGraphDataWithPagination
+    $deviceCompliancePolicies = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies" | Get-MgGraphDataWithPagination).value
     
     foreach ($deviceCompliancePolicy in $deviceCompliancePolicies) {
         $fileName = ($deviceCompliancePolicy.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'

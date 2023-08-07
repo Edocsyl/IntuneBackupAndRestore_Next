@@ -52,6 +52,6 @@ function Invoke-IntuneRestoreDeviceManagementScript {
         catch {
             Write-Verbose "$deviceManagementScriptDisplayName - Failed to restore Device Management Script" -Verbose
             Write-Error $_ -ErrorAction Continue
-        }
+        } 
     }
 }

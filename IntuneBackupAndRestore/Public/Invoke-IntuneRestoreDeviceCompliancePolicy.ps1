@@ -53,7 +53,7 @@ function Invoke-IntuneRestoreDeviceCompliancePolicy {
                         }
                     )
                 }
-            )
+            ) 
             $requestBodyObject | Add-Member -NotePropertyName scheduledActionsForRule -NotePropertyValue $scheduledActionsForRule
             
             # Update the request body reflecting the changes

@@ -53,4 +53,4 @@ function Invoke-IntuneBackupDeviceManagementScript {
             "Path"   = "Device Management Scripts\$deviceManagementScriptFileName.json"
         }
     }
-}
+} 

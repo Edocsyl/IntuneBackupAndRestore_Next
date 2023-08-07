@@ -31,7 +31,7 @@ function Invoke-IntuneBackupClientApp {
     }
 
     # Get all Client Apps
-    $clientApps = Get-MgDeviceAppManagementMobileApp -All
+    $clientApps = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps?`$filter=(microsoft.graph.managedApp/appAvailability%20eq%20null%20or%20microsoft.graph.managedApp/appAvailability%20eq%20%27lineOfBusiness%27%20or%20isAssigned%20eq%20true)"
         
     foreach ($clientApp in $clientApps) {
         $clientAppType = $ClientApp.AdditionalProperties.'@odata.type'.split('.')[-1]

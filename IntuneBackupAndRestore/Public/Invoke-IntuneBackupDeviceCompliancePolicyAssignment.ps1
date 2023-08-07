@@ -37,9 +37,8 @@ function Invoke-IntuneBackupDeviceCompliancePolicyAssignment {
     # Get all assignments from all policies
     $deviceCompliancePolicies = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies" | Get-MgGraphDataWithPagination
 
-    foreach ($deviceCompliancePolicy in $deviceCompliancePolicies) { 
-        https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies/2d722157-436e-482e-b363-819903aa7327/assignments
-        $assignments = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies/"$deviceCompliancePolicy.id"/assignments"
+    foreach ($deviceCompliancePolicy in $deviceCompliancePolicies) {
+        $assignments = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceCompliancePolicies/$($deviceCompliancePolicy.id)/assignments"
         if ($assignments) {
             $fileName = ($deviceCompliancePolicy.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
             $assignments | ConvertTo-Json | Out-File -LiteralPath "$path\Device Compliance Policies\Assignments\$fileName.json"

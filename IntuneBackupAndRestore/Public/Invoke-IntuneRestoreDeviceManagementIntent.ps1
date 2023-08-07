@@ -50,6 +50,6 @@ function Invoke-IntuneRestoreDeviceManagementIntent {
         catch {
             Write-Verbose "$deviceManagementIntentDisplayName - Failed to restore Device Management Intent ($templateDisplayName)" -Verbose
             Write-Error $_ -ErrorAction Continue
-        }
+        } 
     }
 }

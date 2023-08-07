@@ -49,7 +49,7 @@ function Invoke-IntuneRestoreAppProtectionPolicy {
                     $_.Value = (Get-Date -Date $_.Value -Format s) + "Z"
                 }
             }
-        }
+        } 
 
         $requestBody = $requestBodyObject | Select-Object -Property * -ExcludeProperty id, createdDateTime, lastModifiedDateTime, version | ConvertTo-Json -Depth 100
 

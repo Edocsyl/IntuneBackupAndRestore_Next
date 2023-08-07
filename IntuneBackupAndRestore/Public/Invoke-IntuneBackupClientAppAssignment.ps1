@@ -49,4 +49,4 @@ function Invoke-IntuneBackupClientAppAssignment {
             }
         }
     }
-}
+} 

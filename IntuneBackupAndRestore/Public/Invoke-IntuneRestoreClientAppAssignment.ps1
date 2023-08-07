@@ -72,10 +72,10 @@ function Invoke-IntuneRestoreClientAppAssignment {
         # Get the Client App we are restoring the assignments for
         try {
             if ($restoreById) {
-                $clientAppObject = Get-DeviceAppManagement_MobileApps -mobileAppId $clientAppId
+                $clientAppObject = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps/$clientAppId"
             }
             else {
-                $clientAppObject = Get-DeviceAppManagement_MobileApps | Get-MgGraphDataWithPagination | Where-Object { $_.displayName -eq "$($clientAppName)" -and $_.'@odata.type' -ne "#microsoft.graph.managedAndroidStoreApp" -and $_.'@odata.type' -ne "#microsoft.graph.managedIOSStoreApp" }
+                $clientAppObject = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps?`$filter=(microsoft.graph.managedApp/appAvailability%20eq%20null%20or%20microsoft.graph.managedApp/appAvailability%20eq%20%27lineOfBusiness%27%20or%20isAssigned%20eq%20true)").value | Get-MgGraphDataWithPagination | Where-Object { $_.displayName -eq "$($clientAppName)" -and $_.'@odata.type' -ne "#microsoft.graph.managedAndroidStoreApp" -and $_.'@odata.type' -ne "#microsoft.graph.managedIOSStoreApp" }
                 if (-not ($clientAppObject)) {
                     Write-Warning "Error retrieving Intune Client App for $($clientApp.FullName). Skipping assignment restore"
                     continue

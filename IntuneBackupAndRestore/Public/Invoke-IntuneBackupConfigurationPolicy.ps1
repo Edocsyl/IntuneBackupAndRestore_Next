@@ -32,10 +32,10 @@ function Invoke-IntuneBackupConfigurationPolicy {
     }
 
     # Get all Setting Catalogs Policies
-    $configurationPolicies = Get-MgDeviceManagementConfigurationPolicy -All 
+    $configurationPolicies = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations").value
 
     foreach ($configurationPolicy in $configurationPolicies) {
-        $settings = Get-MgDeviceManagementConfigurationPolicySetting -DeviceManagementConfigurationPolicyId $configurationPolicy.id -All | ConvertTo-Json
+        $settings = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations/$configurationPolicy.id").value
 
         if ($settings -isnot [System.Array]) {
             $configurationPolicy.Settings = @($settings)

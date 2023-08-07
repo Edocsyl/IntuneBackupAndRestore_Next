@@ -47,5 +47,5 @@ function Invoke-IntuneBackupAppProtectionPolicy {
             "Name"   = $appProtectionPolicy.displayName
             "Path"   = "App Protection Policies\$fileName.json"
         }
-    }
+    } 
 }

@@ -51,5 +51,5 @@ function Invoke-IntuneBackupGroupPolicyConfigurationAssignment {
                 "Path"   = "Administrative Templates\Assignments\$fileName.json"
             }
         }
-    }
+    } 
 }

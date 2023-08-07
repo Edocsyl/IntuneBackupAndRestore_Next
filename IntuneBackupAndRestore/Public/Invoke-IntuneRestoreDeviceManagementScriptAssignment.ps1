@@ -93,4 +93,4 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
             Write-Error $_ -ErrorAction Continue
         }
     }
-}
+} 

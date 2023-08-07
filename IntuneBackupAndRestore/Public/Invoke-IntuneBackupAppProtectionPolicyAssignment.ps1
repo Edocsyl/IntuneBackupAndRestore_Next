@@ -69,6 +69,6 @@ function Invoke-IntuneBackupAppProtectionPolicyAssignment {
                 "Name"   = $appProtectionPolicy.displayName
                 "Path"   = "App Protection Policies\Assignments\$fileName.json"
             }
-        }
+        } 
     }
 }

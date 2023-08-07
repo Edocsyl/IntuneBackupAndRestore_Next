@@ -53,4 +53,4 @@ function Invoke-IntuneRestoreConfigurationPolicy {
             Write-Error $_ -ErrorAction Continue
         }
     }
-}
+} 

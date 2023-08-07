@@ -77,7 +77,7 @@ function Invoke-IntuneRestoreConfigurationPolicyAssignment {
             Write-Error $_ -ErrorAction Continue
             continue
         }
-
+ 
         # Restore the assignments
         try {
             $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceManagement/configurationPolicies/$($configurationPolicyObject.id)/assign" -ErrorAction Stop

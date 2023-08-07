@@ -52,4 +52,4 @@ function Invoke-IntuneBackupDeviceManagementScriptAssignment {
             }
         }
     }
-}
+} 

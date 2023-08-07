@@ -23,9 +23,9 @@ function Invoke-IntuneBackupConfigurationPolicyAssignment {
         [string]$ApiVersion = "Beta"
     )
 
-    # Set the Microsoft Graph API endpoint
-    Select-MgProfile -Name $ApiVersion
-    $url = "https://graph.microsoft.com/$ApiVersion"
+    # # Set the Microsoft Graph API endpoint
+    # Select-MgProfile -Name $ApiVersion
+    # $url = "https://graph.microsoft.com/$ApiVersion"
 
     # Create folder if not exists
     if (-not (Test-Path "$Path\Settings Catalog\Assignments")) {
