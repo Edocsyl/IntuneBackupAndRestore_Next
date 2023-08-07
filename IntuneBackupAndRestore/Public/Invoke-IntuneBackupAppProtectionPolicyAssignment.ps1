@@ -24,7 +24,7 @@ function Invoke-IntuneBackupAppProtectionPolicyAssignment {
     )
 
     # Set the Microsoft Graph API endpoint
-    Select-MgProfile -Name $ApiVersion
+    #Select-MgProfile -Name $ApiVersion
     $url = "https://graph.microsoft.com/$ApiVersion"
 
     # Create folder if not exists
@@ -34,25 +34,25 @@ function Invoke-IntuneBackupAppProtectionPolicyAssignment {
 
     # Get all assignments from all policies
     #$appProtectionPolicies = Get-IntuneAppProtectionPolicy | Get-MgGraphDataWithPagination
-    $appProtectionPolicies = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/managedAppPolicies" -OutputType JSON | ConvertFrom-Json
+    $appProtectionPolicies = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/managedAppPolicies" -OutputType JSON | ConvertFrom-Json
     $appProtectionPolicies = $AppProtectionPolicies.value
 
     foreach ($appProtectionPolicy in $appProtectionPolicies) {
         # If Android
         if ($appProtectionPolicy.'@odata.type' -eq '#microsoft.graph.androidManagedAppProtection') {
-            $assignments = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/androidManagedAppProtections('$($appProtectionPolicy.id)')/assignments"
+            $assignments = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/androidManagedAppProtections('$($appProtectionPolicy.id)')/assignments"
         }
         # Elseif iOS
         elseif ($appProtectionPolicy.'@odata.type' -eq '#microsoft.graph.iosManagedAppProtection') {
-            $assignments = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/iosManagedAppProtections('$($appProtectionPolicy.id)')/assignments"
+            $assignments = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/iosManagedAppProtections('$($appProtectionPolicy.id)')/assignments"
         }
         # Elseif Windows 10 with enrollment
         elseif ($appProtectionPolicy.'@odata.type' -eq '#microsoft.graph.mdmWindowsInformationProtectionPolicy') {
-            $assignments = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/mdmWindowsInformationProtectionPolicies('$($appProtectionPolicy.id)')/assignments"
+            $assignments = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/mdmWindowsInformationProtectionPolicies('$($appProtectionPolicy.id)')/assignments"
         }
         # Elseif Windows 10 without enrollment
         elseif ($appProtectionPolicy.'@odata.type' -eq '#microsoft.graph.windowsInformationProtectionPolicy') {
-            $assignments = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/windowsInformationProtectionPolicies('$($appProtectionPolicy.id)')/assignments"
+            $assignments = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/windowsInformationProtectionPolicies('$($appProtectionPolicy.id)')/assignments"
         }
         else {
             # Not supported App Protection Policy

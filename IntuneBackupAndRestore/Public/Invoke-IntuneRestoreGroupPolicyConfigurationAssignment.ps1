@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreGroupPolicyConfigurationAssignment {
         # Get the Group Policy Configuration we are restoring the assignments for
         try {
             if ($restoreById) {
-                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$groupPolicyConfigurationId").value
+                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations/$groupPolicyConfigurationId").value
             }
             else {
-                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($groupPolicyConfiguration.BaseName)"
+                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($groupPolicyConfiguration.BaseName)"
                 if (-not ($groupPolicyConfigurationObject)) {
                     Write-Verbose "Error retrieving Intune Administrative Template for $($groupPolicyConfiguration.FullName). Skipping assignment restore" -Verbose
                     continue
@@ -80,7 +80,7 @@ function Invoke-IntuneRestoreGroupPolicyConfigurationAssignment {
 
         # Restore the assignments
         try {
-            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfigurationObject.id)/assign" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations/$($groupPolicyConfigurationObject.id)/assign" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Administrative Template Assignments"

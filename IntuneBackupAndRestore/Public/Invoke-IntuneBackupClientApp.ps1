@@ -22,7 +22,7 @@ function Invoke-IntuneBackupClientApp {
         [ValidateSet("v1.0", "Beta")]
         [string]$ApiVersion = "Beta"
     )
-    # Select-MgProfile -Name $ApiVersion
+    # #Select-MgProfile -Name $ApiVersion
     $url = "https://graph.microsoft.com/$ApiVersion"
 
     # Create folder if not exists
@@ -37,7 +37,7 @@ function Invoke-IntuneBackupClientApp {
         $clientAppType = $ClientApp.'@odata.type'.split('.')[-1]
         $fileName = ($clientApp.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
 
-        $clientAppDetails = Invoke-GraphRequest -Method GET -Uri "$url/deviceAppManagement/mobileApps/$($clientApp.Id)" -OutputType JSON | ConvertFrom-Json
+        $clientAppDetails = Invoke-GraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps/$($clientApp.Id)" -OutputType JSON | ConvertFrom-Json
         $clientAppDetails | ConvertTo-Json | Out-File -LiteralPath "$path\Client Apps\$($clientAppType)_$($fileName).json"
 
         [PSCustomObject]@{

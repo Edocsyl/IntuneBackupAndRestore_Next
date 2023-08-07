@@ -35,12 +35,12 @@ function Invoke-IntuneBackupDeviceManagementIntent {
     }
 
     Write-Verbose "Requesting Intents"
-    $intents = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/intents" | Get-MgGraphDataWithPagination
+    $intents = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/intents" | Get-MgGraphDataWithPagination).value
 
     foreach ($intent in $intents) {
         # Get the corresponding Device Management Template
         Write-Verbose "Requesting Template"
-        $template = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/templates/$($intent.templateId)"
+        $template = Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/templates/$($intent.templateId)"
         $templateDisplayName = ($template.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
 
         if (-not (Test-Path "$Path\Device Management Intents\$templateDisplayName")) {
@@ -49,13 +49,13 @@ function Invoke-IntuneBackupDeviceManagementIntent {
         
         # Get all setting categories in the Device Management Template
         Write-Verbose "Requesting Template Categories"
-        $templateCategories = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/templates/$($intent.templateId)/categories" | Get-MgGraphDataWithPagination
+        $templateCategories = Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/templates/$($intent.templateId)/categories" | Get-MgGraphDataWithPagination
 
         $intentSettingsDelta = @()
         foreach ($templateCategory in $templateCategories) {
             # Get all configured values for the template categories
             Write-Verbose "Requesting Intent Setting Values"
-            $intentSettingsDelta += (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/intents/$($intent.id)/categories/$($templateCategory.id)/settings").value
+            $intentSettingsDelta += (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/intents/$($intent.id)/categories/$($templateCategory.id)/settings").value
         }
 
         $intentBackupValue = @{

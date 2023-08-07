@@ -40,7 +40,7 @@ function Invoke-IntuneRestoreConfigurationPolicy {
 
         # Restore the Settings Catalog Policy
         try {
-            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceManagement/configurationPolicies" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "https://graph.microsoft.com/beta/deviceManagement/configurationPolicies" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Settings Catalog"

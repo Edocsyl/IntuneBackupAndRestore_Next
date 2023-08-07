@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
         # Get the Device Management Script we are restoring the assignments for
         try {
             if ($restoreById) {
-                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts/$deviceManagementScriptId").value
+                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/deviceManagementScripts/$deviceManagementScriptId").value
             }
             else {
-                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
+                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/deviceManagementScripts" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
                 if (-not ($deviceManagementScriptObject)) {
                     Write-Verbose "Error retrieving Intune Device Management Script for $($deviceManagementScript.FullName). Skipping assignment restore" -Verbose
                     continue
@@ -80,7 +80,7 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
 
         # Restore the assignments
         try {
-            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceManagement/deviceManagementScripts/$($deviceManagementScriptObject.id)/assign" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "https://graph.microsoft.com/beta/deviceManagement/deviceManagementScripts/$($deviceManagementScriptObject.id)/assign" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Device Management Script Assignments"

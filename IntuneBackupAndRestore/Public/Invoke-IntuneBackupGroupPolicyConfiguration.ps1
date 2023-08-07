@@ -35,15 +35,15 @@ function Invoke-IntuneBackupGroupPolicyConfiguration {
     }
 
     # Get all Group Policy Configurations
-    $groupPolicyConfigurations = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value
+    $groupPolicyConfigurations = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value
 
     foreach ($groupPolicyConfiguration in $groupPolicyConfigurations) {
-        $groupPolicyDefinitionValues = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues" | Get-MgGraphDataWithPagination).value
+        $groupPolicyDefinitionValues = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues" | Get-MgGraphDataWithPagination).value
         $groupPolicyBackupValues = @()
 
         foreach ($groupPolicyDefinitionValue in $groupPolicyDefinitionValues) {
-            $groupPolicyDefinition = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues/$($groupPolicyDefinitionValue.id)/definition"
-            $groupPolicyPresentationValues = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues/$($groupPolicyDefinitionValue.id)/presentationValues?`$expand=presentation").Value | Select-Object -Property * -ExcludeProperty lastModifiedDateTime, createdDateTime
+            $groupPolicyDefinition = Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues/$($groupPolicyDefinitionValue.id)/definition"
+            $groupPolicyPresentationValues = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues/$($groupPolicyDefinitionValue.id)/presentationValues?`$expand=presentation").Value | Select-Object -Property * -ExcludeProperty lastModifiedDateTime, createdDateTime
             $groupPolicyBackupValue = @{
                 "enabled" = $groupPolicyDefinitionValue.enabled
                 "definition@odata.bind" = "https://graph.microsoft.com/beta/deviceManagement/groupPolicyDefinitions('$($groupPolicyDefinition.id)')"

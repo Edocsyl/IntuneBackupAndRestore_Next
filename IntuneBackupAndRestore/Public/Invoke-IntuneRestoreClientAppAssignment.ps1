@@ -90,7 +90,7 @@ function Invoke-IntuneRestoreClientAppAssignment {
 
         # Restore the assignments
         try {
-            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "deviceAppManagement/mobileApps/$($clientAppObject.id)/assign" -ErrorAction Stop
+            $null = Invoke-MgGraphRequest -Method POST -Body $requestBody.toString() -URI "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps/$($clientAppObject.id)/assign" -ErrorAction Stop
             [PSCustomObject]@{
                 "Action" = "Restore"
                 "Type"   = "Client App Assignments"

@@ -38,7 +38,7 @@ function Invoke-IntuneBackupDeviceConfigurationAssignment {
     $deviceConfigurations = (invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations" | Get-MgGraphDataWithPagination).value
 
     foreach ($deviceConfiguration in $deviceConfigurations) {
-        $assignments = (invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/configurationPolicies('$($deviceConfiguration.id)')/assignments" | Get-MgGraphDataWithPagination).value
+        $assignments = (invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations/$($deviceConfiguration.id)/assignments" | Get-MgGraphDataWithPagination).value
         if ($assignments) {
             $fileName = ($deviceConfiguration.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
             $assignments | ConvertTo-Json | Out-File -LiteralPath "$path\Device Configurations\Assignments\$fileName.json"
