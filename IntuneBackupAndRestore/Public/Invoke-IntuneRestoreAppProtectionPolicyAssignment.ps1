@@ -61,7 +61,7 @@ function Invoke-IntuneRestoreAppProtectionPolicyAssignment {
         # Get the App Protection Policy we are restoring the assignments for
         try {
             if ($restoreById) {
-                $appProtectionPolicyObject = Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/managedAppPolicies/$appProtectionPolicyId"
+                $appProtectionPolicyObject = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/managedAppPolicies/$appProtectionPolicyId").value
             }
             else {
                 $appProtectionPolicyObject = (Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/beta/deviceAppManagement/managedAppPolicies" | Get-MgGraphDataWithPagination).value | Where-Object { $_.displayName -eq $appProtectionPolicyName }

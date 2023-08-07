@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreGroupPolicyConfigurationAssignment {
         # Get the Group Policy Configuration we are restoring the assignments for
         try {
             if ($restoreById) {
-                $groupPolicyConfigurationObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$groupPolicyConfigurationId"
+                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$groupPolicyConfigurationId").value
             }
             else {
-                $groupPolicyConfigurationObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination | Where-Object displayName -eq "$($groupPolicyConfiguration.BaseName)"
+                $groupPolicyConfigurationObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($groupPolicyConfiguration.BaseName)"
                 if (-not ($groupPolicyConfigurationObject)) {
                     Write-Verbose "Error retrieving Intune Administrative Template for $($groupPolicyConfiguration.FullName). Skipping assignment restore" -Verbose
                     continue

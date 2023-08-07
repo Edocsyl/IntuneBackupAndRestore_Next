@@ -35,10 +35,10 @@ function Invoke-IntuneBackupGroupPolicyConfiguration {
     }
 
     # Get all Group Policy Configurations
-    $groupPolicyConfigurations = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination
+    $groupPolicyConfigurations = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations" | Get-MgGraphDataWithPagination).value
 
     foreach ($groupPolicyConfiguration in $groupPolicyConfigurations) {
-        $groupPolicyDefinitionValues = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues" | Get-MgGraphDataWithPagination
+        $groupPolicyDefinitionValues = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/groupPolicyConfigurations/$($groupPolicyConfiguration.id)/definitionValues" | Get-MgGraphDataWithPagination).value
         $groupPolicyBackupValues = @()
 
         foreach ($groupPolicyDefinitionValue in $groupPolicyDefinitionValues) {

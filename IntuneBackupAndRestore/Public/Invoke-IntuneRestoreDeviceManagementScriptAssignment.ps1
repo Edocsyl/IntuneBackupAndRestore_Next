@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreDeviceManagementScriptAssignment {
         # Get the Device Management Script we are restoring the assignments for
         try {
             if ($restoreById) {
-                $deviceManagementScriptObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts/$deviceManagementScriptId"
+                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts/$deviceManagementScriptId").value
             }
             else {
-                $deviceManagementScriptObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts" | Get-MgGraphDataWithPagination | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
+                $deviceManagementScriptObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/deviceManagementScripts" | Get-MgGraphDataWithPagination).value | Where-Object displayName -eq "$($deviceManagementScript.BaseName)"
                 if (-not ($deviceManagementScriptObject)) {
                     Write-Verbose "Error retrieving Intune Device Management Script for $($deviceManagementScript.FullName). Skipping assignment restore" -Verbose
                     continue

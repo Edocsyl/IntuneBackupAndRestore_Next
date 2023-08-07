@@ -62,10 +62,10 @@ function Invoke-IntuneRestoreConfigurationPolicyAssignment {
         # Get the Configuration Policy we are restoring the assignments for
         try {
             if ($restoreById) {
-                $configurationPolicyObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/configurationPolicies/$configurationPolicyId"
+                $configurationPolicyObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/configurationPolicies/$configurationPolicyId").value
             }
             else {
-                $configurationPolicyObject = Invoke-MgGraphRequest -Method GET -URI "deviceManagement/configurationPolicies" | Get-MgGraphDataWithPagination | Where-Object name -eq "$($configurationPolicy.BaseName)"
+                $configurationPolicyObject = (Invoke-MgGraphRequest -Method GET -URI "deviceManagement/configurationPolicies" | Get-MgGraphDataWithPagination).value | Where-Object name -eq "$($configurationPolicy.BaseName)"
                 if (-not ($configurationPolicyObject)) {
                     Write-Verbose "Error retrieving Intune Session Catalog for $($configurationPolicy.FullName). Skipping assignment restore" -Verbose
                     continue
