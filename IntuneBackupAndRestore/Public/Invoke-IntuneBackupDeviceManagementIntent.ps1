@@ -35,7 +35,7 @@ function Invoke-IntuneBackupDeviceManagementIntent {
     }
 
     Write-Verbose "Requesting Intents"
-    $intents = (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/intents" | Get-MgGraphDataWithPagination).value
+    $intents = Get-MgDeviceManagementIntent -all
 
     foreach ($intent in $intents) {
         # Get the corresponding Device Management Template
@@ -55,7 +55,15 @@ function Invoke-IntuneBackupDeviceManagementIntent {
         foreach ($templateCategory in $templateCategories) {
             # Get all configured values for the template categories
             Write-Verbose "Requesting Intent Setting Values"
-            $intentSettingsDelta += (Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/intents/$($intent.id)/categories/$($templateCategory.id)/settings").value
+            $intentSettingsDelta += Get-MgDeviceManagementIntentCategorySetting -DeviceManagementIntentId: $($intent.id) -DeviceManagementIntentSettingCategoryId $($templateCategory.id) -all| ForEach-Object{
+                [PSCustomObject]@{
+                    "@odata.type"   = $_.AdditionalProperties."@odata.type"
+                    id              = $_.id
+                    definitionId    = $_.DefinitionId
+                    valueJson       = $_.ValueJson
+                    value           = $_.AdditionalProperties.value
+                }
+            }
         }
 
         $intentBackupValue = @{
@@ -66,7 +74,7 @@ function Invoke-IntuneBackupDeviceManagementIntent {
         }
         
         $fileName = ("$($template.id)_$($intent.displayName)").Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
-        $intentBackupValue | ConvertTo-Json | Out-File -LiteralPath "$path\Device Management Intents\$templateDisplayName\$fileName.json"
+        $intentBackupValue | ConvertTo-Json -depth 10 | Out-File -LiteralPath "$path\Device Management Intents\$templateDisplayName\$fileName.json"
 
         [PSCustomObject]@{
             "Action" = "Backup"
@@ -76,4 +84,3 @@ function Invoke-IntuneBackupDeviceManagementIntent {
         }
     }
 }
- 
