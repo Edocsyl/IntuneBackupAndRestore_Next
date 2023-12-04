@@ -35,12 +35,12 @@ function Invoke-IntuneBackupDeviceManagementIntent {
     }
 
     Write-Verbose "Requesting Intents"
-    $intents = Get-MgDeviceManagementIntent -all
+    $intents = Get-MgBetaDeviceManagementIntent -all
 
     foreach ($intent in $intents) {
         # Get the corresponding Device Management Template
         Write-Verbose "Requesting Template"
-        $template = Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/templates/$($intent.templateId)"
+        $template = Get-MgBetaDeviceManagementTemplate -DeviceManagementTemplateId $intent.templateId
         $templateDisplayName = ($template.displayName).Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
 
         if (-not (Test-Path "$Path\Device Management Intents\$templateDisplayName")) {
@@ -49,13 +49,13 @@ function Invoke-IntuneBackupDeviceManagementIntent {
         
         # Get all setting categories in the Device Management Template
         Write-Verbose "Requesting Template Categories"
-        $templateCategories = Invoke-MgGraphRequest -Method GET -URI "https://graph.microsoft.com/beta/deviceManagement/templates/$($intent.templateId)/categories" | Get-MgGraphDataWithPagination
+        $templateCategories = Get-MgBetaDeviceManagementTemplateCategory -DeviceManagementTemplateId $intent.templateId
 
         $intentSettingsDelta = @()
         foreach ($templateCategory in $templateCategories) {
             # Get all configured values for the template categories
             Write-Verbose "Requesting Intent Setting Values"
-            $intentSettingsDelta += Get-MgDeviceManagementIntentCategorySetting -DeviceManagementIntentId: $($intent.id) -DeviceManagementIntentSettingCategoryId $($templateCategory.id) -all| ForEach-Object{
+            $intentSettingsDelta += Get-MgBetaDeviceManagementIntentCategorySetting -DeviceManagementIntentId: $($intent.id) -DeviceManagementIntentSettingCategoryId $($templateCategory.id) -all| ForEach-Object{
                 [PSCustomObject]@{
                     "@odata.type"   = $_.AdditionalProperties."@odata.type"
                     id              = $_.id
