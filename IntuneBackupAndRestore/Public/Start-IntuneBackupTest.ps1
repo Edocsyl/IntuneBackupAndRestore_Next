@@ -1,4 +1,4 @@
-function Start-IntuneBackup() {
+function Start-IntuneBackupTest() {
     <#
     .SYNOPSIS
     Backup Intune Configuration
@@ -11,7 +11,7 @@ function Start-IntuneBackup() {
 
     .EXAMPLE
     Start-IntuneBackup -Path C:\temp
-Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"
+
     .NOTES
     Requires the MSGraphFunctions PowerShell Module
 
@@ -31,6 +31,7 @@ Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"
         "Path"   = $Path
     }
 
+    <# 
     Invoke-IntuneBackupClientApp -Path $Path
     Invoke-IntuneBackupClientAppAssignment -Path $Path
     Invoke-IntuneBackupConfigurationPolicy -Path $Path
@@ -47,5 +48,6 @@ Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"
     Invoke-IntuneBackupAppProtectionPolicy -Path $Path
     Invoke-IntuneBackupDeviceHealthScript -Path $Path
     Invoke-IntuneBackupDeviceHealthScriptAssignment -Path $Path
+    #>
     Invoke-IntuneBackupWindowsDriverUpdateProfiles -Path $Path
 }

@@ -1,8 +1,4 @@
-# Intune Backup & Restore
-
-![PowerShell Gallery](https://img.shields.io/powershellgallery/v/IntuneBackupAndRestore.svg?label=PSGallery%20Version&logo=PowerShell&style=flat-square)
-![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/IntuneBackupAndRestore.svg?label=PSGallery%20Downloads&logo=PowerShell&style=flat-square)
-
+# Intune Backup & Restore Next
 
 This PowerShell Module queries Microsoft Graph, and allows for cross-tenant Backup & Restore actions of your Intune Configuration.
 
@@ -26,6 +22,7 @@ Update-Module -Name IntuneBackupAndRestore
 As of version 2.0.0, the IntuneBackupAndRestore PowerShell Module has migrated from the MSGraphFunctions PowerShell module to the Microsoft.Graph.Intune PowerShell module. Please make sure you meet the prerequisites below.
 
 - Connect to Microsoft Graph using the `Connect-MgGraph` PSCmdlet first.
+  - Maybe you also have to define the permissions scope: `Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"`
 - Make sure to import the IntuneBackupAndRestore PowerShell module before using it with the `Import-Module IntuneBackupAndRestore` cmdlet.
 
 ## Features
@@ -62,6 +59,9 @@ As of version 2.0.0, the IntuneBackupAndRestore PowerShell Module has migrated f
   - Account protection
   - Device compliance
 
+#### Next
+- Windows Driver Policy 
+
 ### Restore actions
 - Administrative Templates (Device Configurations)
 - Administrative Template Assignments
@@ -90,6 +90,9 @@ As of version 2.0.0, the IntuneBackupAndRestore PowerShell Module has migrated f
   - Attack surface reduction
   - Account protection
   - Device compliance
+
+  #### Next
+- Windows Driver Policy (comming soon)
 
 > Please note that some Client App settings can be backed up, for instance the retrieval of Win32 (un)install cmdlets, requirements, etcetera. The Client App itself is not backed up and this module does not support restoring Client Apps at this time.
 
