@@ -21,6 +21,8 @@ Update-Module -Name IntuneBackupAndRestore
 ## Prerequisites
 As of version 2.0.0, the IntuneBackupAndRestore PowerShell Module has migrated from the MSGraphFunctions PowerShell module to the Microsoft.Graph.Intune PowerShell module. Please make sure you meet the prerequisites below.
 
+https://learn.microsoft.com/en-us/powershell/module/microsoft.graph.authentication/connect-mggraph?view=graph-powershell-1.0
+
 - Connect to Microsoft Graph using the `Connect-MgGraph` PSCmdlet first.
   - Maybe you also have to define the permissions scope: `Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"`
 - Make sure to import the IntuneBackupAndRestore PowerShell module before using it with the `Import-Module IntuneBackupAndRestore` cmdlet.
