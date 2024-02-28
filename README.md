@@ -18,6 +18,16 @@ Install-Module -Name IntuneBackupAndRestore
 Update-Module -Name IntuneBackupAndRestore
 ```
 
+## Testing and Developing
+
+```powershell
+# Manual Import
+Import-Module .\IntuneBackupAndRestore.psd1
+
+# Start Test Backup
+Start-IntuneBackupTest
+```
+
 ## Prerequisites
 As of version 2.0.0, the IntuneBackupAndRestore PowerShell Module has migrated from the MSGraphFunctions PowerShell module to the Microsoft.Graph.Intune PowerShell module. Please make sure you meet the prerequisites below.
 

@@ -47,5 +47,6 @@ Connect-MgGraph -Scopes "DeviceManagementConfiguration.Read.All"
     Invoke-IntuneBackupAppProtectionPolicy -Path $Path
     Invoke-IntuneBackupDeviceHealthScript -Path $Path
     Invoke-IntuneBackupDeviceHealthScriptAssignment -Path $Path
+    # Next
     Invoke-IntuneBackupWindowsDriverUpdateProfiles -Path $Path
 }
